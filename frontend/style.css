@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgb(210, 128, 196);
+}
+canvas {
+    border: 2px solid rgb(33, 25, 31);
+    background: rgb(88, 59, 146);
+}
+#pong {
+    border-radius: 10px;
+}
+
+.custom-btn {
+    background-color: #725b8f;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    border-radius: 8px;
+}
+
+.custom-btn:hover {
+    background-color: #3c2d4e;
+    color: rgb(209, 208, 208);
+}
