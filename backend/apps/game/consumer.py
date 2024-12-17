@@ -7,8 +7,6 @@ from .gamemanager import GameManager
 
 logger = logging.getLogger(__name__)
 
-# Create a global instance of GameManager
-# In a production setting, you might start it elsewhere and import that instance.
 game_manager = GameManager()
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -41,11 +39,22 @@ class GameConsumer(AsyncWebsocketConsumer):
         if player_alias:
             game_manager.set_player_alias(self.room_name, self.channel_name, player_alias)
 
+        if action == 'canvas_and_game_config':
+            canvas = data.get('canvas')
+            paddle = data.get('paddle')
+            ball = data.get('ball')
+            logger.info(f"Received canvas and game config: canvas={canvas}, paddle={paddle}, ball={ball}")
+            game_manager.set_game_config(self.room_name, canvas, paddle, ball)
+
+
         if action == 'input':
             up = data.get('up', False)
             down = data.get('down', False)
             game_manager.update_player_input(self.room_name, self.channel_name, up, down)
 
+        elif action == 'start_game':
+            logger.info(f"Starting game for room: {self.room_name}")
+            await game_manager.broadcast_all_states()
+
     async def game_message(self, event):
-        # Called by group_send in GameManager
         await self.send(text_data=json.dumps(event['data']))
